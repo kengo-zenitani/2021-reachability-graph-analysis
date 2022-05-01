@@ -1,0 +1,11 @@
+digraph graph_name {
+  graph [
+    charset = "UTF-8";
+  ];
+
+  // node definition
+  %Nodes%
+
+  // edge definition
+  %Edges%
+}

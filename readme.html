@@ -1,0 +1,78 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
+<style>
+	.markdown-body {
+		box-sizing: border-box;
+		min-width: 200px;
+		max-width: 980px;
+		margin: 0 auto;
+		padding: 45px;
+	}
+
+	@media (max-width: 767px) {
+		.markdown-body {
+			padding: 15px;
+		}
+	}
+</style>
+
+<article class="markdown-body">
+
+<h1>Overview</h1>
+<p>This package provides the source code files for the experiments
+in "A scalable algorithm for network reachability analysis with cyclic attack graphs".
+The programs are written in Python 3.7.0. We use cpython3.7 to perform the benchmarks.
+The quick summary of each file is shown below.</p>
+<ul>
+	<li><b>setup.py</b>: randomly generates the network models for the experiments. The generated files will be stored in <code>./network/</code>.</li>
+	<li><b>test2_bn.py</b>, <b>test2_rg.py</b>: performs the benchmarking to compare the inference speed of LBP and reachability graph analysis. The result files will be stored in <code>./benchmark/test2-bn/</code> and <code>./benchmark/test2-rg/</code>, respectively.</li>
+	<li><b>test3.py</b>: performs the benchmarking to verify the scalability of reachability graph analysis. The result files will be stored in <code>./benchmark/test3/</code>.</li>
+	<li><b>test4.py</b>: performs the benchmarking to verify the performance of reachability graph analysis applied to cyclic attack graphs. The result files will be stored in <code>./benchmark/test4/</code>.</li>
+	<li><b>utils_figure.py</b>: generates the figures.</li>
+</ul>
+
+<p>Other files below provide the foundation for the programs above.</p>
+
+<ul>
+	<li><b>common.py</b>: defines the common classes.</li>
+	<li><b>network.py</b>: defines the classes which implement the network model.</li>
+	<li><b>network_template.dot</b>: is used by the method <code>Network.to_dot</code> in <b>network.py</b>.</li>
+	<li><b>bayesian_network.py</b>: implements the Bayesian inference based on LBP algorithm.</li>
+	<li><b>bayesian_network_template.dot</b>: is used by the method <code>BayesianNet.to_dot</code> in <b>bayesian_network.py</b>.</li>
+	<li><b>reachability_graph.py</b>: implements the reachability graph analysis algorithm.</li>
+	<li><b>reachability_graph_template.dot</b>: is used by the method <code>ReachabilityGraph.to_dot</code> in <b>reachability_graph.py</b>.</li>
+</ul>
+
+<h1>Setup</h1>
+<p>Python 3.7.0 environment with <a href="https://matplotlib.org/" target="_blank">matplotlib</a> is required.
+To generate the network models, just to type and enter the following.</p>
+
+<div class="highlight highlight-source-js">
+<pre><span class="pl-k">$</span> python setup.py</pre>
+</div>
+
+<p>This setup is needed before the test programs execution below.</p>
+
+
+
+<h1>Note</h1>
+
+<ul>
+<li>You can preview the network structure by <code>Network.to_dot</code>.
+The output is a .dot script for <a href="https://www.graphviz.org/" target="_blank">graphviz</a>.
+Similarly, <code>BayesianNet.to_dot</code> and <code>ReachabilityGraph.to_dot</code> generate .dot scripts for a Bayesian attack graph and a reachability graph respectively.
+</li>
+
+<li>In the paper, both a Bayesian attack graph and a reachability graph are supposed to be generated from an attack graph.
+However, in this program, both graphs are generated directly from the abstract network model defined as an instance of Network.
+The conversion process is implemented in <code>ReachabilityEvaluator.__init__</code> and <code>BayesianEvaluator.__init__</code>.
+A Network instance is not an attack graph, which is equivalent to the composition of an attack graph <i>G</i>, and initial reachabilities <i>I</i>.
+(In the program, initial reachabilities are coded as "rigidity". More precisely, <code>(1 - rigidity) / 100 == initial_reachability</code>.)
+</li>
+
+<li>The central part of the implementation of reachability graph analysis is in <code>ReachabilityGraph.query</code>.
+</li>
+
+</ul>
+
+</article>
